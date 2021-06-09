@@ -1,0 +1,30 @@
+<div [onKeyDown]="KEYS" (handler)="onKeyDown($event)" (wheel)="onWheel($event)" id="viewer_container" class="viewer_container back-drop">
+  <div dragableItem class="viewer-main-content">
+    <img  [draggable]="true" id="viewer" [hidden]="loading"  [@hiddenToShow]="loading ? 'hidden' : 'show' " #imgRef (load)="loaded()" [src]="imageViewerList[selectedIndex].originUrl" alt="origin image {{selectedIndex}}">
+    <div [hidden]="!loading" class="loader">
+      <i class="" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+    </div>
+    <div class="percent">
+      <span [@triggerOpacity]="showImagePercent ? 'opacity_1' : 'opacity_0'">{{ imagePercent | number: '1.0-2' }} %</span>
+    </div>
+  </div>
+  <div id="viewer_footer" class="viewer_footer">
+    <div class="image-info">
+      {{ currentImageName }} ({{ currentImageWidth }} x {{ currentImageHeight }} )
+    </div>
+    <div class="actions">
+      <ul>
+        <li *ngFor="let btn of LIST_BUTTONS"  (click)="action(btn.EVENT)" [title]="btn.NAME">
+          <i [ngClass]="btn.ICON"></i>
+        </li>
+      </ul>
+    </div>
+    <div class="thumbnail">
+      <ul>
+        <li *ngFor="let thumbnail of (imageViewerList | extractElsToArray: 'thumbnailUrl'); let i = index">
+          <img [ngClass]="i === selectedIndex ? 'activated' : '' " [src]="thumbnail" alt="thumbnail {{i}}" (click)="move(i, true)">
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
